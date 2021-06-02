@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MAFIL.Common.DB;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
@@ -46,6 +49,7 @@ namespace MAFIL.Common.DB.Infrastructure.Data
             _appSetting = appSettings;
 
         }
+        public AuditDbContext(DbContextOptions<AuditDbContext> options) : base(options) { }
 
         #endregion constrcutors
 
