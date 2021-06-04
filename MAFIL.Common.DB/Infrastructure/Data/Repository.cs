@@ -33,6 +33,12 @@ namespace MAFIL.Common.DB.Infrastructure.Data
             _dbContext.SaveChanges();
         }
 
+        public virtual void CreateCollection(IEnumerable<T> entity)
+        {
+            DbSet.AddRange(entity);
+            _dbContext.SaveChanges();
+        }
+
         public virtual void CreateWithoutCommit(T entity)
         {
             DbSet.Add(entity);

@@ -8,6 +8,7 @@ namespace MAFIL.Common.DB.Domain
         IQueryable<T> GetAll();
         T GetById(int id);
         void Create(T entity);
+        void CreateCollection(IEnumerable<T> entity);
         int CreateWithReturnId(T entity);
         void SaveChanges();
 
