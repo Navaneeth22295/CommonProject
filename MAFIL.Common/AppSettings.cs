@@ -10,5 +10,7 @@ namespace MAFIL.Common
     {
         public string APIGatewayURL { get; set; }
         public bool EnableAuditing { get; set; }
+
+        public string Secret { get; set; }
     }
 }

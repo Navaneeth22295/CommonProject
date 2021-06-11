@@ -18,6 +18,10 @@ namespace MAFIL.Common.DB.Infrastructure.Data
         private readonly IOptions<AppSettings> _appSetting;
 
         #region constrcutors
+        public AuditDbContext(DbContextOptions<AuditDbContext> options): base(options)
+        {
+
+        }
 
         public AuditDbContext(IOptions<AppSettings> appSettings, IHttpContextAccessor httpContextAccessor)
         {
@@ -49,7 +53,6 @@ namespace MAFIL.Common.DB.Infrastructure.Data
             _appSetting = appSettings;
 
         }
-        public AuditDbContext(DbContextOptions<AuditDbContext> options) : base(options) { }
 
         #endregion constrcutors
 
