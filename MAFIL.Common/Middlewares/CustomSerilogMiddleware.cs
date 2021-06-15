@@ -47,9 +47,9 @@ namespace MAFIL.Common.Middlewares
         static bool LogException(HttpContext httpContext, Stopwatch sw, Exception ex)
         {
             sw.Stop();
-
+            string msg = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
             LogForErrorContext(httpContext)
-                .Error(ex, _messageTemplate, httpContext.Request.Method, httpContext.Request.Path, 500, sw.Elapsed.TotalMilliseconds);
+                .Error(msg, _messageTemplate, httpContext.Request.Method, httpContext.Request.Path, 500, sw.Elapsed.TotalMilliseconds);
 
             return false;
         }

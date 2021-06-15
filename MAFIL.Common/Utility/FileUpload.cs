@@ -16,7 +16,6 @@ namespace MAFIL.Common.Utility
             public string Base64Data { get; set; }
             public string FileName { get; set; }
             public string FileExtn { get; set; }
-            //public string UploadFile { get; set; }
         }
         public string CreatePdfFile(UploadFile file)
         {
