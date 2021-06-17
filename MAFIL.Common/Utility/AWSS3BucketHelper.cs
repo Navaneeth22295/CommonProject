@@ -15,7 +15,9 @@ namespace MAFIL.Common.Utility
     {
         Task<string> UploadFile(System.IO.Stream inputStream, string fileName);
         Task<ListVersionsResponse> FilesList();
-      
+
+        Task<Stream> GetFile(string key);
+
     }
     public class AWSS3BucketHelper : IAWSS3BucketHelper
     {
@@ -46,6 +48,17 @@ namespace MAFIL.Common.Utility
 
                 throw ex;
             }
+        }
+
+
+        public async Task<Stream> GetFile(string key)
+        {
+
+            GetObjectResponse response = await _amazonS3.GetObjectAsync("losdocs", key);
+            if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+                return await Task.FromResult(response.ResponseStream);
+            else
+                return null;
         }
         public async Task<ListVersionsResponse> FilesList()
         {
