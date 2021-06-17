@@ -18,6 +18,9 @@ namespace MAFIL.Common.Utility
 
         Task<Stream> GetFile(string key);
 
+        string GetPreSignedURL(string fileName);
+
+
     }
     public class AWSS3BucketHelper : IAWSS3BucketHelper
     {
@@ -53,17 +56,54 @@ namespace MAFIL.Common.Utility
 
         public async Task<Stream> GetFile(string key)
         {
-
-            GetObjectResponse response = await _amazonS3.GetObjectAsync("losdocs", key);
-            if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
-                return await Task.FromResult(response.ResponseStream);
-            else
+            try
+            {
+                GetObjectResponse response = await _amazonS3.GetObjectAsync("losdocs", key);
+                if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+                    return await Task.FromResult(response.ResponseStream);
+                else
+                    return null;
+            }
+            catch (Exception e)
+            {
                 return null;
+            }
+
+            
         }
         public async Task<ListVersionsResponse> FilesList()
         {
             return await _amazonS3.ListVersionsAsync("losdocs");
         }
+
+        public string GetPreSignedURL(string fileName)
+        {
+            //GetPreSignedUrlRequest expiryUrlRequest = new GetPreSignedUrlRequest()
+            //               .WithBucketName(fileName)
+            //               .WithKey("losdocs")
+            //               .WithExpires(DateTime.Now.AddDays(10));
+            GetPreSignedUrlRequest request = new GetPreSignedUrlRequest();
+            request.BucketName = "losdocs"; 
+            request.Key = fileName;
+            request.Expires = DateTime.Now.AddHours(1);
+            request.Protocol = Protocol.HTTP;
+            string url = _amazonS3.GetPreSignedURL(request);
+            return url;
+        }
+
+        //public async Task<List<string>> FilesListOfURL()
+        //{
+        //    try
+        //    {
+        //        ListVersionsResponse listVersions = await _AWSS3BucketHelper.FilesList();
+        //        return listVersions.Versions.Select(c => c.Key).ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw ex;
+        //    }
+        //}
 
 
 
