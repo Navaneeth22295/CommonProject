@@ -17,6 +17,7 @@ namespace MAFIL.Common.Utility
             public string FileName { get; set; }
             public string FileExtn { get; set; }
             public string FileUrl { get; set; }
+            public string BucketKey { get; set; }
         }
         public string CreatePdfFile(UploadFile file)
         {

@@ -79,10 +79,6 @@ namespace MAFIL.Common.Utility
 
         public string GetPreSignedURL(string fileName)
         {
-            //GetPreSignedUrlRequest expiryUrlRequest = new GetPreSignedUrlRequest()
-            //               .WithBucketName(fileName)
-            //               .WithKey("losdocs")
-            //               .WithExpires(DateTime.Now.AddDays(10));
             GetPreSignedUrlRequest request = new GetPreSignedUrlRequest();
             request.BucketName = "losdocs"; 
             request.Key = fileName;
@@ -102,7 +98,7 @@ namespace MAFIL.Common.Utility
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception(ex.Message);
             }
 
 
