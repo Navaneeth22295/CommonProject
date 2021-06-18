@@ -20,6 +20,7 @@ namespace MAFIL.Common.Utility
 
         string GetPreSignedURL(string fileName);
 
+        Task<string> DeleteFile(string key);
 
     }
     public class AWSS3BucketHelper : IAWSS3BucketHelper
@@ -89,6 +90,22 @@ namespace MAFIL.Common.Utility
             request.Protocol = Protocol.HTTP;
             string url = _amazonS3.GetPreSignedURL(request);
             return url;
+        }
+
+        public async Task<string> DeleteFile(string key)
+        {
+            try
+            {
+                DeleteObjectResponse response = await _amazonS3.DeleteObjectAsync("losdocs", key);
+               
+                return response.ToString();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
         }
 
         //public async Task<List<string>> FilesListOfURL()
