@@ -13,11 +13,21 @@ namespace MAFIL.Common.Utility
     {
         public class UploadFile
         {
+            public int  LoanDocumentTypeId { get; set; }
+            public string LoanDocumentType { get; set; }
             public string Base64Data { get; set; }
             public string FileName { get; set; }
             public string FileExtn { get; set; }
+            public string FileSize { get; set; }
             public string FileUrl { get; set; }
             public string BucketKey { get; set; }
+            public int Status { get; set; }         
+            public int Created_By { get; set; }           
+            public DateTime Created_On { get; set; }
+            public int Update_By { get; set; }
+            public DateTime Update_On { get; set; }
+
+
         }
         public string CreatePdfFile(UploadFile file)
         {
