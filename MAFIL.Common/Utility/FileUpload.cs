@@ -27,7 +27,6 @@ namespace MAFIL.Common.Utility
             public int Update_By { get; set; }
             public DateTime Update_On { get; set; }
 
-
         }
         public string CreatePdfFile(UploadFile file)
         {

@@ -35,7 +35,7 @@ namespace MAFIL.Common.Middlewares
             var result = JsonConvert.SerializeObject(new
             {
                 StatusCode = statusCode,
-                ErrorMessage = exception.Message
+                ErrorMessage = exception.Message + exception.InnerException
             });
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = statusCode;
