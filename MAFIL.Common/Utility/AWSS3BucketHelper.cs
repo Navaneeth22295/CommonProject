@@ -13,14 +13,14 @@ namespace MAFIL.Common.Utility
    /// Developer : Sanoop ,Date : 15-06-21, Description:Helper class to upload documents to AWS-S3 
     public interface IAWSS3BucketHelper
     {
-        Task<string> UploadFile(System.IO.Stream inputStream, string fileName);
-        Task<ListVersionsResponse> FilesList();
+        Task<string> UploadFile(System.IO.Stream inputStream, string fileName, string bucketName);
+        Task<ListVersionsResponse> FilesList(string bucketName);
 
-        Task<Stream> GetFile(string key);
+        Task<Stream> GetFile(string bucketName, string key);
 
-        string GetPreSignedURL(string fileName);
+        string GetPreSignedURL(string fileName, string bucketName);
 
-        Task<string> DeleteFile(string key);
+        Task<string> DeleteFile(string bucketName, string key);
 
     }
     public class AWSS3BucketHelper : IAWSS3BucketHelper
@@ -32,14 +32,15 @@ namespace MAFIL.Common.Utility
             this._amazonS3 = s3Client;
           
         }
-        public async Task<string> UploadFile(System.IO.Stream inputStream, string fileName)
+        public async Task<string> UploadFile(System.IO.Stream inputStream, string fileName, string bucketName)
         {
             try
             {
                 PutObjectRequest request = new PutObjectRequest()
                 {
                     InputStream = inputStream,
-                    BucketName = "losdocs", /*_settings.AWSS3.BucketName*/
+                    //BucketName = "losdocs", /*_settings.AWSS3.BucketName*/
+                    BucketName= bucketName,
                     Key = fileName
                 };
                 
@@ -55,11 +56,12 @@ namespace MAFIL.Common.Utility
         }
 
 
-        public async Task<Stream> GetFile(string key)
+        public async Task<Stream> GetFile(string bucketName, string key)
         {
             try
             {
-                GetObjectResponse response = await _amazonS3.GetObjectAsync("losdocs", key);
+                //GetObjectResponse response = await _amazonS3.GetObjectAsync("losdocs", key);
+                GetObjectResponse response = await _amazonS3.GetObjectAsync(bucketName, key);
                 if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
                     return await Task.FromResult(response.ResponseStream);
                 else
@@ -72,15 +74,17 @@ namespace MAFIL.Common.Utility
 
             
         }
-        public async Task<ListVersionsResponse> FilesList()
+        public async Task<ListVersionsResponse> FilesList(string bucketName)
         {
-            return await _amazonS3.ListVersionsAsync("losdocs");
+            //return await _amazonS3.ListVersionsAsync("losdocs");
+            return await _amazonS3.ListVersionsAsync(bucketName);
         }
 
-        public string GetPreSignedURL(string fileName)
+        public string GetPreSignedURL(string fileName, string bucketName)
         {
             GetPreSignedUrlRequest request = new GetPreSignedUrlRequest();
-            request.BucketName = "losdocs"; 
+            //request.BucketName = "losdocs"; 
+            request.BucketName = bucketName;
             request.Key = fileName;
             request.Expires = DateTime.Now.AddHours(1);
             request.Protocol = Protocol.HTTP;
@@ -88,12 +92,13 @@ namespace MAFIL.Common.Utility
             return url;
         }
 
-        public async Task<string> DeleteFile(string key)
+        public async Task<string> DeleteFile(string bucketName, string key)
         {
             try
             {
-                DeleteObjectResponse response = await _amazonS3.DeleteObjectAsync("losdocs", key);
-               
+                //DeleteObjectResponse response = await _amazonS3.DeleteObjectAsync("losdocs", key);
+                DeleteObjectResponse response = await _amazonS3.DeleteObjectAsync(bucketName, key);
+
                 return response.ToString();
             }
             catch (Exception ex)
